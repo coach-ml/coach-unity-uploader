@@ -21,11 +21,6 @@ namespace Scenes
         public string Name { get { return "Item"; } }
     }
 
-    public class WebcamScene : IScene
-    {
-        public string Name { get { return "Webcam"; } }
-    }
-
     public class TrainerScene : IScene
     {
         public string Name { get { return "Trainer"; } }

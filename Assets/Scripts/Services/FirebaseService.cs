@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Unity.Editor;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace ReactUnity.Services
@@ -18,6 +20,7 @@ namespace ReactUnity.Services
 
         Task<CoachUser> GetUserDetails();
         void WatchModels(EventHandler<ValueChangedEventArgs> onChange);
+        Task<Dictionary<string, ModelStruct>> GetModels();
     }
     public class FirebaseService : IFirebaseService
     {
@@ -107,15 +110,30 @@ namespace ReactUnity.Services
         {
             BaseRef.Child(User.UserId).Child("models").ValueChanged += onChange;
         }
+
+        public async Task<Dictionary<string, ModelStruct>> GetModels()
+        {
+            Dictionary<string, ModelStruct> result = null;
+            try
+            {
+                var snapshot = await BaseRef.Child(User.UserId).Child("models").GetValueAsync();
+                result = JsonConvert.DeserializeObject<Dictionary<string, ModelStruct>>(snapshot.GetRawJsonValue());
+            }
+            catch (Exception ex)
+            {
+                // Handle the error...
+            }
+            return result;
+        }
     }
 
-    class ModelParent
+    public class ModelParent
     {
         public string modelName;
         public ModelStruct modelInfo;
     }
 
-    class ModelStruct
+    public class ModelStruct
     {
         public string modelName;
         public int maxSamples;
@@ -128,6 +146,7 @@ namespace ReactUnity.Services
         public string coachApi;
         public string s3Secret;
         public string bucket;
+        public string clientName;
     }
 
 }

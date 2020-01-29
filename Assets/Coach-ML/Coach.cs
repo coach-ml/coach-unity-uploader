@@ -685,7 +685,7 @@ namespace Coach
     public class CoachClient
     {
         public bool IsDebug { get; private set; }
-        private Profile Profile { get; set; }
+        public Profile Profile { get; set; }
         private string ApiKey { get; set; }
 
         ///<summary>
@@ -723,7 +723,7 @@ namespace Coach
             return ModelDef.FromJson(json);
         }
 
-        private async Task<Profile> GetProfile()
+        public async Task<Profile> GetProfile()
         {
             var id = this.ApiKey.Substring(0, 5);
             var url = $"https://x27xyu10z1.execute-api.us-east-1.amazonaws.com/latest/profile?id={id}";

@@ -30,7 +30,11 @@ namespace ReactUnity.Services
                 }
             }
 
-            var startingPath = Application.persistentDataPath;
+            var startingPath = Path.Combine(Application.persistentDataPath, "upload_data");
+            if (!Directory.Exists(startingPath))
+            {
+                Directory.CreateDirectory(startingPath);
+            }
             if (!String.IsNullOrEmpty(subdirectory))
                 startingPath = Path.Combine(startingPath, subdirectory);
 

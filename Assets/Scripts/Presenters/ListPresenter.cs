@@ -25,6 +25,11 @@ namespace Presenters
                 AddButtons(state.Models);
         }
 
+        protected override void OnRefocus()
+        {
+            // We should call _s3.Watch here
+        }
+
         public void ShowUploadPanel()
         {
             this.uploadPanel.SetActive(true);
@@ -36,11 +41,11 @@ namespace Presenters
             this.uploadPanel.SetActive(false);
             this.testPanel.SetActive(true);
         }
-        
+
+        public RectTransform Container;
         private void AddButtons(List<ItemModel> itemList)
         {
-            var contentPanel = testPanel.GetComponentInChildren<GameObject>().GetComponentInChildren<RectTransform>();
-            foreach (Transform child in contentPanel.transform)
+            foreach (Transform child in Container.transform)
             {
                 Destroy(child.gameObject);
             }
@@ -55,36 +60,16 @@ namespace Presenters
                     DownloadAndPlay(model);
                 });
                 newButton.GetComponentInChildren<Text>().text = model.Name;
-                
-                newButton.transform.SetParent(contentPanel, false);
+                newButton.transform.SetParent(Container, false);
             }
         }
         
-        public void DownloadAndPlay(ItemModel model)
+        public async void DownloadAndPlay(ItemModel itemModel)
         {
-            if (!model.BinaryExists)
+            var model = await Controller.DownloadModel(itemModel.Name);
+            Controller._sceneService.LoadScene<Scenes.TestScene>(new TestModel()
             {
-                /*
-                Controller._staticDataService.DownloadAssetToPath(model.Binary, model.Name, (sender, args) =>
-                {
-                    Play(model);
-                });
-                */
-            }
-            else
-            {
-                Play(model);
-            }
-        }
-
-        public void Play(ItemModel model)
-        {
-            string path = ""; // Controller._staticDataService.FullBinaryPath(model.Name);
-            Controller._sceneService.LoadScene<Scenes.WebcamScene>(new WebcamModel()
-            {
-                BinaryPath = path,
-                Labels = model.Labels,
-                Title = model.Name.ToUpper()[0] + model.Name.Substring(1) + " Recognizer"
+                model = model
             }, LoadSceneMode.Additive);
         }
 
@@ -101,9 +86,11 @@ namespace Presenters
         private int Counter = 0;
         public void FixedUpdate()
         {
+            /*
             Counter++;
             if (Counter % 200 == 0)
                 Controller.GetModels();
+            */
         }
     }
 }

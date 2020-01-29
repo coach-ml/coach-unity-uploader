@@ -20,6 +20,7 @@ namespace ReactUnity.Services
     {
         private AmazonS3Client Client { get; set; }
         private string Bucket { get; set; }
+        private string ClientName { get; set; }
 
         IFirebaseService _firebaseService;
 
@@ -31,12 +32,17 @@ namespace ReactUnity.Services
         public void Initialize(CoachUser user)
         {
             Bucket = user.bucket;
+            ClientName = user.clientName;
             Client = new AmazonS3Client(user.s3Key, user.s3Secret, RegionEndpoint.USWest2);
         }
 
         public async void WatchRoot()
         {
-            var path = Application.persistentDataPath;
+            var path = Path.Combine(Application.persistentDataPath, "upload_data");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
             foreach (var dir in Directory.GetDirectories(path))
             {
                 var label = Path.GetFileName(dir);
@@ -65,7 +71,7 @@ namespace ReactUnity.Services
             var request = new PostObjectRequest()
             {
                 Bucket = Bucket,
-                Key = "testdata/" + label + "/" + Path.GetFileName(fileName),
+                Key = $"testdata/{ClientName}/{label}/{Path.GetFileName(fileName)}",
                 InputStream = stream,
                 CannedACL = S3CannedACL.Private
             };

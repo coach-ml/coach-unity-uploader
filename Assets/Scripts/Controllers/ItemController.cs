@@ -21,33 +21,20 @@ namespace Controllers
 
         public override void Start()
         {
-            if (State == null)
-                return;
-
-            if (State.PreviewTexture != null)
-                SetState(State);
-            else
-            {
-                
-            }
+            
         }
 
         public void DownloadAndPlay(Action finished = null)
         {
-            if (!this.State.BinaryExists)
-            {
-
-            } else
-            {
-                finished?.Invoke();
-
-                Play();
-            }
+            // TODO
+            finished?.Invoke();
+            Play();
         }
 
         // Load up the play scene
         public void Play()
         {
+            /*
             string path = ""; // _staticDataService.FullBinaryPath(State.Name);
             _sceneService.LoadScene<Scenes.WebcamScene>(new WebcamModel()
             {
@@ -55,6 +42,7 @@ namespace Controllers
                 Labels = State.Labels,
                 Title = State.Name.ToUpper()[0] + State.Name.Substring(1) + " Recognizer"
             }, LoadSceneMode.Additive);
+            */
         }
     }
 }

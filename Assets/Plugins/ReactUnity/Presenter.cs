@@ -51,6 +51,8 @@ namespace ReactUnity
         /// <param name="model">Model to render</param>
         protected abstract void Render(M model);
 
+        protected virtual void OnRefocus() { }
+
         /// <summary>
         /// Creates new instance of a Presenter
         /// </summary>
