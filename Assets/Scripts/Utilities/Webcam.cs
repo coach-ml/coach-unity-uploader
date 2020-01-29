@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +7,6 @@ namespace Utilities
     public class Webcam : MonoBehaviour
     {
         public RawImage WebcamImage;
-
         private WebCamTexture _webCamTexture { get; set; }
 
         public void Start()
@@ -95,7 +89,7 @@ namespace Utilities
         {
 #if UNITY_IOS
 		    // iOS cam is mirrored
-            image.gameObject.transform.localScale = new Vector3(-1, 1, 1);
+            WebcamImage.gameObject.transform.localScale = new Vector3(-1, 1, 1);
 #endif
             WebcamImage.gameObject.transform.Rotate(0.0f, 0, -_webCamTexture.videoRotationAngle);
             return _webCamTexture.videoRotationAngle != 0;

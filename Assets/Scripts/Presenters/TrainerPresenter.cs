@@ -11,7 +11,7 @@ namespace Presenters
 {
     class TrainerPresenter : Presenter<TrainerController, TrainerModel>
     {
-        public Webcam Webcam;
+        public DeviceCameraController Webcam;
 
         public InputField NameField;
         public Text ScanHeading;
@@ -61,7 +61,7 @@ namespace Presenters
         {
             if (NameField.text != "")
             {
-                var photo = Webcam.GetPhoto();
+                var photo = Webcam.GetWebcamPhoto();
                 byte[] bytes = photo.EncodeToJPG();
                 UnityEngine.Object.Destroy(photo);
 
