@@ -131,4 +131,11 @@ public class DeviceCameraController : MonoBehaviour
         imageParent.localScale =
             activeCameraDevice.isFrontFacing ? fixedScale : defaultScale;
     }
+
+    public void Dispose()
+    {
+        Stop();
+        Texture2D.Destroy(activeCameraTexture);
+        Destroy(this);
+    }
 }

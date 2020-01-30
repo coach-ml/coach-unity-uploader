@@ -31,6 +31,7 @@ public class TestPresenter : Presenter<TestController, TestModel>
 
     public void GoBack()
     {
+        CameraController.Dispose();
         Controller.GoBack();
     }
 }

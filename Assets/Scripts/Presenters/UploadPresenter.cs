@@ -45,11 +45,11 @@ class UploadController : Controller<UploadModel>
         {
             if (args.DatabaseError == null)
             {
-                var models = new List<ModelStruct>();
-                var js = JsonConvert.DeserializeObject<Dictionary<string, ModelStruct>>(args.Snapshot.GetRawJsonValue());
+                var models = new List<UploadStruct>();
+                var js = JsonConvert.DeserializeObject<Dictionary<string, UploadStruct>>(args.Snapshot.GetRawJsonValue());
                 foreach (var key in js.Keys)
                 {
-                    models.Add(new ModelStruct()
+                    models.Add(new UploadStruct()
                     {
                         maxSamples = js[key].maxSamples,
                         sampleUploadProgress = js[key].sampleUploadProgress,
@@ -65,5 +65,5 @@ class UploadController : Controller<UploadModel>
 
 class UploadModel : IModel
 {
-    public List<ModelStruct> models;
+    public List<UploadStruct> models;
 }

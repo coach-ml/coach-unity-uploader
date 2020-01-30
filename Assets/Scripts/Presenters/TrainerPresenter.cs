@@ -11,7 +11,7 @@ namespace Presenters
 {
     class TrainerPresenter : Presenter<TrainerController, TrainerModel>
     {
-        public DeviceCameraController Webcam;
+        public DeviceCameraController CameraController;
 
         public InputField NameField;
         public Text ScanHeading;
@@ -61,7 +61,7 @@ namespace Presenters
         {
             if (NameField.text != "")
             {
-                var photo = Webcam.GetWebcamPhoto();
+                var photo = CameraController.GetWebcamPhoto();
                 byte[] bytes = photo.EncodeToJPG();
                 UnityEngine.Object.Destroy(photo);
 
@@ -72,6 +72,7 @@ namespace Presenters
         public void GoBack()
         {
             Controller.FinishedCapture();
+            CameraController.Dispose();
 
             var listPresenter = GameObject.FindGameObjectWithTag("Presenter").GetComponent<ListPresenter>();
             listPresenter.OnRefocus();
@@ -79,7 +80,7 @@ namespace Presenters
 
         protected override void OnPresenterDestroy()
         {
-            Webcam.Stop();
+            CameraController.Dispose();
         }
 
         public void HideTutorial()

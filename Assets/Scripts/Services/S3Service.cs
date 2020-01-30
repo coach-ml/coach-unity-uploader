@@ -71,7 +71,7 @@ namespace ReactUnity.Services
             var request = new PostObjectRequest()
             {
                 Bucket = Bucket,
-                Key = $"testdata/{ClientName}/{label}/{Path.GetFileName(fileName)}",
+                Key = $"uploads/{ClientName}/{label}/{Path.GetFileName(fileName)}",
                 InputStream = stream,
                 CannedACL = S3CannedACL.Private
             };

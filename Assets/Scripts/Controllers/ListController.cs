@@ -1,11 +1,8 @@
 ﻿using Models;
-using System;
 using ReactUnity;
 using ReactUnity.Services;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Coach;
 
@@ -55,7 +52,7 @@ namespace Controllers
             var models = await _coachService.GetModels();
             var listModel = new List<ItemModel>();
 
-            var firebaseModels = (await _firebaseService.GetModels());
+            var firebaseModels = (await _firebaseService.GetBuiltModels());
 
             foreach (var model in models)
             {

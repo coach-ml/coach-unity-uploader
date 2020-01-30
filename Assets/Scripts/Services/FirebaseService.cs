@@ -23,7 +23,8 @@ namespace ReactUnity.Services
 
         Task<CoachUser> GetUserDetails();
         void WatchModels(EventHandler<ValueChangedEventArgs> onChange);
-        Task<Dictionary<string, ModelStruct>> GetModels();
+        Task<Dictionary<string, UploadStruct>> GetModels();
+        Task<Dictionary<string, BuiltModel>> GetBuiltModels();
     }
     public class FirebaseService : IFirebaseService
     {
@@ -84,11 +85,11 @@ namespace ReactUnity.Services
 
         public void NewModel(string modelName)
         {
-            var json = JsonUtility.ToJson(new ModelStruct()
+            var json = JsonUtility.ToJson(new UploadStruct()
             {
                 modelName = modelName
             });
-            var reff = BaseRef.Child(User.UserId).Child("models").Child(modelName);
+            var reff = BaseRef.Child(User.UserId).Child("uploads").Child(modelName);
             reff.SetRawJsonValueAsync(json).ContinueWith(task =>
             {
                 if (task.IsFaulted)
@@ -101,39 +102,39 @@ namespace ReactUnity.Services
 
         public async Task UpdateModel(string modelName, int maxSamples, int sampleUploadProgress)
         {
-            var json = JsonUtility.ToJson(new ModelStruct() {
+            var json = JsonUtility.ToJson(new UploadStruct() {
                 modelName = modelName,
-                maxSamples =  maxSamples,
+                maxSamples = maxSamples,
                 sampleUploadProgress = sampleUploadProgress
             });
-            BaseRef.Child(User.UserId).Child("models").Child(modelName).SetRawJsonValueAsync(json);
+            BaseRef.Child(User.UserId).Child("uploads").Child(modelName).SetRawJsonValueAsync(json);
         }
 
         public async Task UpdateModel(string modelName)
         {
             var currentModel = await GetModel(modelName);
 
-            var json = JsonUtility.ToJson(new ModelStruct()
+            var json = JsonUtility.ToJson(new UploadStruct()
             {
                 modelName = currentModel.modelName,
                 maxSamples = currentModel.maxSamples,
                 sampleUploadProgress = currentModel.sampleUploadProgress + 1
             });
-            BaseRef.Child(User.UserId).Child("models").Child(modelName).SetRawJsonValueAsync(json);
+            BaseRef.Child(User.UserId).Child("uploads").Child(modelName).SetRawJsonValueAsync(json);
         }
 
         public void WatchModels(EventHandler<ValueChangedEventArgs> onChange)
         {
-            BaseRef.Child(User.UserId).Child("models").ValueChanged += onChange;
+            BaseRef.Child(User.UserId).Child("uploads").ValueChanged += onChange;
         }
 
-        public async Task<ModelStruct> GetModel(string modelName)
+        public async Task<UploadStruct> GetModel(string modelName)
         {
-            ModelStruct result = null;
+            UploadStruct result = null;
             try
             {
-                var snapshot = await BaseRef.Child(User.UserId).Child("models").Child(modelName).GetValueAsync();
-                result = JsonConvert.DeserializeObject<ModelStruct>(snapshot.GetRawJsonValue());
+                var snapshot = await BaseRef.Child(User.UserId).Child("uploads").Child(modelName).GetValueAsync();
+                result = JsonConvert.DeserializeObject<UploadStruct>(snapshot.GetRawJsonValue());
             }
             catch (Exception ex)
             {
@@ -142,13 +143,28 @@ namespace ReactUnity.Services
             return result;
         }
 
-        public async Task<Dictionary<string, ModelStruct>> GetModels()
+        public async Task<Dictionary<string, UploadStruct>> GetModels()
         {
-            Dictionary<string, ModelStruct> result = null;
+            Dictionary<string, UploadStruct> result = null;
             try
             {
-                var snapshot = await BaseRef.Child(User.UserId).Child("models").GetValueAsync();
-                result = JsonConvert.DeserializeObject<Dictionary<string, ModelStruct>>(snapshot.GetRawJsonValue());
+                var snapshot = await BaseRef.Child(User.UserId).Child("uploads").GetValueAsync();
+                result = JsonConvert.DeserializeObject<Dictionary<string, UploadStruct>>(snapshot.GetRawJsonValue());
+            }
+            catch (Exception ex)
+            {
+                // Handle the error...
+            }
+            return result;
+        }
+
+        public async Task<Dictionary<string, BuiltModel>> GetBuiltModels()
+        {
+            Dictionary<string, BuiltModel> result = null;
+            try
+            {
+                var snapshot = await BaseRef.Child(User.UserId).Child("builtModels").GetValueAsync();
+                result = JsonConvert.DeserializeObject<Dictionary<string, BuiltModel>>(snapshot.GetRawJsonValue());
             }
             catch (Exception ex)
             {
@@ -166,14 +182,19 @@ namespace ReactUnity.Services
     public class ModelParent
     {
         public string modelName;
-        public ModelStruct modelInfo;
+        public UploadStruct modelInfo;
     }
 
-    public class ModelStruct
+    public class UploadStruct
     {
         public string modelName;
         public int maxSamples;
         public int sampleUploadProgress;
+    }
+
+    public class BuiltModel
+    {
+        public bool modelPassed;
     }
 
     public class CoachUser
