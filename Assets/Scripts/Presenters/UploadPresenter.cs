@@ -25,7 +25,13 @@ class UploadPresenter : Presenter<UploadController, UploadModel>
             // Instantiate a loader
             GameObject entry = Instantiate(ModelStatusPrefab);
             if (model.maxSamples > 0)
+            {
                 entry.GetComponentInChildren<Text>().text = $"{model.modelName}\n{model.sampleUploadProgress}/{model.maxSamples}";
+                if (model.sampleUploadProgress == model.maxSamples)
+                {
+                    entry.GetComponent<Image>().color = Color.green;
+                }
+            }
             entry.transform.SetParent(Container, false);
         }
     }
