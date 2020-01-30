@@ -66,14 +66,15 @@ namespace Presenters
                 UnityEngine.Object.Destroy(photo);
 
                 Controller.TakePhoto(bytes);
-                // await Controller._staticDataService.UploadImage(Controller.WebClient, NameField.text, bytes);
-
             }
         }
 
         public void GoBack()
         {
             Controller.FinishedCapture();
+
+            var listPresenter = GameObject.FindGameObjectWithTag("Presenter").GetComponent<ListPresenter>();
+            listPresenter.OnRefocus();
         }
 
         protected override void OnPresenterDestroy()

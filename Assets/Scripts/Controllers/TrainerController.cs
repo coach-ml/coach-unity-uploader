@@ -46,7 +46,7 @@ namespace Controllers
 
         public void FinishedCapture()
         {
-            _fireaseService.UpdateModel(State.Subject, State.SampleCount);
+            _fireaseService.UpdateModel(State.Subject, State.SampleCount, 0);
             _sceneService.GoBack();
         }
 

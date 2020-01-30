@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Scenes
@@ -95,6 +96,13 @@ namespace ReactUnity.Services
             string currentScene = SceneNameHistory.Count <= 1 ? null : SceneNameHistory[SceneNameHistory.Count - 1];
             SceneManager.UnloadSceneAsync(currentScene);
             SceneNameHistory.RemoveAt(SceneNameHistory.Count - 1);
+        }
+
+        public void GoBack<T>() where T : Presenter<Controller<IModel>, IModel>
+        {
+            GoBack();
+            var presenter = GameObject.FindGameObjectWithTag("Presenter").GetComponent<T>();
+            presenter.OnRefocus();
         }
     }
 }

@@ -9,9 +9,12 @@ class UploadPresenter : Presenter<UploadController, UploadModel>
 {
     public RectTransform Container;
     public GameObject ModelStatusPrefab;
+    public Text PreviewText;
 
     protected override void Render(UploadModel viewModel)
     {
+        PreviewText.enabled = viewModel.models.Count == 0;
+
         foreach (Transform child in Container.transform)
         {
             Destroy(child.gameObject);

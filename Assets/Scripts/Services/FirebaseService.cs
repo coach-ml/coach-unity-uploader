@@ -16,7 +16,10 @@ namespace ReactUnity.Services
         void Initialize(EventHandler authStateChanged);
         Task<FirebaseUser> SignIn(string email, string password);
         void NewModel(string modelName);
-        void UpdateModel(string modelName, int maxSamples, int sampleUploadProgress = 0);
+        Task UpdateModel(string modelName, int maxSamples, int sampleUploadProgress);
+        Task UpdateModel(string modelName);
+        // void UpdateModel(string modelName, int maxSamples, int sampleUploadProgress = 0);
+        void Logout();
 
         Task<CoachUser> GetUserDetails();
         void WatchModels(EventHandler<ValueChangedEventArgs> onChange);
@@ -96,12 +99,25 @@ namespace ReactUnity.Services
 
         }
 
-        public void UpdateModel(string modelName, int maxSamples, int sampleUploadProgress = 0)
+        public async Task UpdateModel(string modelName, int maxSamples, int sampleUploadProgress)
         {
             var json = JsonUtility.ToJson(new ModelStruct() {
                 modelName = modelName,
-                maxSamples = maxSamples,
+                maxSamples =  maxSamples,
                 sampleUploadProgress = sampleUploadProgress
+            });
+            BaseRef.Child(User.UserId).Child("models").Child(modelName).SetRawJsonValueAsync(json);
+        }
+
+        public async Task UpdateModel(string modelName)
+        {
+            var currentModel = await GetModel(modelName);
+
+            var json = JsonUtility.ToJson(new ModelStruct()
+            {
+                modelName = currentModel.modelName,
+                maxSamples = currentModel.maxSamples,
+                sampleUploadProgress = currentModel.sampleUploadProgress + 1
             });
             BaseRef.Child(User.UserId).Child("models").Child(modelName).SetRawJsonValueAsync(json);
         }
@@ -109,6 +125,21 @@ namespace ReactUnity.Services
         public void WatchModels(EventHandler<ValueChangedEventArgs> onChange)
         {
             BaseRef.Child(User.UserId).Child("models").ValueChanged += onChange;
+        }
+
+        public async Task<ModelStruct> GetModel(string modelName)
+        {
+            ModelStruct result = null;
+            try
+            {
+                var snapshot = await BaseRef.Child(User.UserId).Child("models").Child(modelName).GetValueAsync();
+                result = JsonConvert.DeserializeObject<ModelStruct>(snapshot.GetRawJsonValue());
+            }
+            catch (Exception ex)
+            {
+                // Handle the error...
+            }
+            return result;
         }
 
         public async Task<Dictionary<string, ModelStruct>> GetModels()
@@ -124,6 +155,11 @@ namespace ReactUnity.Services
                 // Handle the error...
             }
             return result;
+        }
+
+        public void Logout()
+        {
+            Auth.SignOut();
         }
     }
 

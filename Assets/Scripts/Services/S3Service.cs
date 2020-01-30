@@ -52,7 +52,7 @@ namespace ReactUnity.Services
                     var file = files[i];
                     var didSucceed = await UploadFile(file, label);
                     if (didSucceed) {
-                        _firebaseService.UpdateModel(label, files.Length, i + 1);
+                        _firebaseService.UpdateModel(label);
                         File.Delete(file);
                     }
                 }

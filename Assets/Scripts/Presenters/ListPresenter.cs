@@ -18,16 +18,20 @@ namespace Presenters
         public GameObject testPanel;
         public GameObject uploadPanel;
         public Text noModelsWarning;
-        
+
         protected override void Render(ListModel state)
         {
+            noModelsWarning.enabled = state.Models?.Count == 0;
+
             if (state.Models?.Count > 0)
+            {
                 AddButtons(state.Models);
+            }
         }
 
-        protected override void OnRefocus()
+        public override void OnRefocus()
         {
-            // We should call _s3.Watch here
+            Controller.OnFocus();
         }
 
         public void ShowUploadPanel()
@@ -81,6 +85,11 @@ namespace Presenters
                     SampleCount = 0,
                     Subject = ""
                 }, LoadSceneMode.Additive);
+        }
+
+        public void Logout()
+        {
+            Controller.Logout();
         }
 
         private int Counter = 0;

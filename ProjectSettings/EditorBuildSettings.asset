@@ -15,9 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Item.unity
     guid: 4ef6132eb5c0260468e41084a2218fb4
   - enabled: 1
-    path: Assets/Scenes/Webcam.unity
-    guid: 72fba20a845daf0408ebeaf74688d561
-  - enabled: 1
     path: Assets/Scenes/Trainer.unity
     guid: ed08c640b5788e54f959672481db484a
+  - enabled: 1
+    path: Assets/Scenes/Test.unity
+    guid: a0bd5bcaf65c87d48850c1e9f861579a
   m_configObjects: {}

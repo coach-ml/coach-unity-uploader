@@ -59,8 +59,7 @@ namespace Controllers
 
             foreach (var model in models)
             {
-                // TODO: Remove !
-                if (!firebaseModels.ContainsKey(model)) {
+                if (firebaseModels.ContainsKey(model)) {
                     listModel.Add(new ItemModel()
                     {
                         Name = model
@@ -69,6 +68,13 @@ namespace Controllers
             }
 
             SetState(new ListModel() { Models = listModel });
+        }
+
+        public void Logout()
+        {
+            // TODO: This is a hack, do this proper sometime, will need to refactor Splash -> List
+            _firebaseService.Logout();
+            Application.Quit(0);
         }
     }
 }

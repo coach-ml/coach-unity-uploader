@@ -6,6 +6,7 @@ using ReactUnity;
 using ReactUnity.Services;
 using Coach;
 using System;
+using Presenters;
 
 public class TestPresenter : Presenter<TestController, TestModel>
 {
@@ -26,8 +27,6 @@ public class TestPresenter : Presenter<TestController, TestModel>
     {
         var photo = CameraController.GetWebcamPhoto();
         Controller.Predict(photo);
-
-        // Controller.GetResultsAsync();
     }
 
     public void GoBack()
@@ -75,7 +74,6 @@ public class TestController : Controller<TestModel>
         if (State.model != null)
         {
             var results = State.model.GetPredictionResultAsync(true);
-            Debug.LogWarning(results);
             if (results != null)
             {
                 var best = results.Best();
@@ -92,6 +90,9 @@ public class TestController : Controller<TestModel>
     {
         State.model.CleanUp();
         _sceneService.GoBack();
+
+        var listPresenter = GameObject.FindGameObjectWithTag("Presenter").GetComponent<ListPresenter>();
+        listPresenter.OnRefocus();
     }
 }
 
