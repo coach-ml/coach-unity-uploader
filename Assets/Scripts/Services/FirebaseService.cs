@@ -18,7 +18,6 @@ namespace ReactUnity.Services
         void NewModel(string modelName);
         Task UpdateModel(string modelName, int maxSamples, int sampleUploadProgress);
         Task UpdateModel(string modelName);
-        // void UpdateModel(string modelName, int maxSamples, int sampleUploadProgress = 0);
         void Logout();
 
         Task<CoachUser> GetUserDetails();
@@ -97,7 +96,6 @@ namespace ReactUnity.Services
                     Debug.LogError(task.Exception.Message);
                 }
             });
-
         }
 
         public async Task UpdateModel(string modelName, int maxSamples, int sampleUploadProgress)
@@ -107,7 +105,7 @@ namespace ReactUnity.Services
                 maxSamples = maxSamples,
                 sampleUploadProgress = sampleUploadProgress
             });
-            BaseRef.Child(User.UserId).Child("uploads").Child(modelName).SetRawJsonValueAsync(json);
+            await BaseRef.Child(User.UserId).Child("uploads").Child(modelName).SetRawJsonValueAsync(json);
         }
 
         public async Task UpdateModel(string modelName)
@@ -120,7 +118,7 @@ namespace ReactUnity.Services
                 maxSamples = currentModel.maxSamples,
                 sampleUploadProgress = currentModel.sampleUploadProgress + 1
             });
-            BaseRef.Child(User.UserId).Child("uploads").Child(modelName).SetRawJsonValueAsync(json);
+            await BaseRef.Child(User.UserId).Child("uploads").Child(modelName).SetRawJsonValueAsync(json);
         }
 
         public void WatchModels(EventHandler<ValueChangedEventArgs> onChange)
@@ -134,7 +132,8 @@ namespace ReactUnity.Services
             try
             {
                 var snapshot = await BaseRef.Child(User.UserId).Child("uploads").Child(modelName).GetValueAsync();
-                result = JsonConvert.DeserializeObject<UploadStruct>(snapshot.GetRawJsonValue());
+                if (snapshot != null)
+                    result = JsonConvert.DeserializeObject<UploadStruct>(snapshot.GetRawJsonValue());
             }
             catch (Exception ex)
             {
@@ -149,7 +148,8 @@ namespace ReactUnity.Services
             try
             {
                 var snapshot = await BaseRef.Child(User.UserId).Child("uploads").GetValueAsync();
-                result = JsonConvert.DeserializeObject<Dictionary<string, UploadStruct>>(snapshot.GetRawJsonValue());
+                if (snapshot != null)
+                    result = JsonConvert.DeserializeObject<Dictionary<string, UploadStruct>>(snapshot.GetRawJsonValue());
             }
             catch (Exception ex)
             {

@@ -18,6 +18,7 @@ namespace Presenters
         public GameObject testPanel;
         public GameObject uploadPanel;
         public Text noModelsWarning;
+        public Text PanelTitle;
 
         protected override void Render(ListModel state)
         {
@@ -38,12 +39,14 @@ namespace Presenters
         {
             this.uploadPanel.SetActive(true);
             this.testPanel.SetActive(false);
+            this.PanelTitle.text = "Coach Uploads";
         }
 
         public void ShowTestPanel()
         {
             this.uploadPanel.SetActive(false);
             this.testPanel.SetActive(true);
+            this.PanelTitle.text = "Coach Models";
         }
 
         public RectTransform Container;

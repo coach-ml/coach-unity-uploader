@@ -27,9 +27,13 @@ class UploadPresenter : Presenter<UploadController, UploadModel>
             if (model.maxSamples > 0)
             {
                 entry.GetComponentInChildren<Text>().text = $"{model.modelName}\n{model.sampleUploadProgress}/{model.maxSamples}";
-                if (model.sampleUploadProgress == model.maxSamples)
+                if (model.sampleUploadProgress >= model.maxSamples)
                 {
-                    entry.GetComponent<Image>().color = Color.green;
+                    entry.GetComponent<Image>().color = new Color32(34, 96, 66, 255);
+                    foreach (var child in entry.GetComponentsInChildren<RawImage>())
+                    {
+                        child.enabled = !child.enabled;
+                    }
                 }
             }
             entry.transform.SetParent(Container, false);
@@ -51,19 +55,23 @@ class UploadController : Controller<UploadModel>
         {
             if (args.DatabaseError == null)
             {
-                var models = new List<UploadStruct>();
-                var js = JsonConvert.DeserializeObject<Dictionary<string, UploadStruct>>(args.Snapshot.GetRawJsonValue());
-                foreach (var key in js.Keys)
+                var json = args.Snapshot.GetRawJsonValue();
+                if (json != null)
                 {
-                    models.Add(new UploadStruct()
+                    var models = new List<UploadStruct>();
+                    var js = JsonConvert.DeserializeObject<Dictionary<string, UploadStruct>>(json);
+                    foreach (var key in js.Keys)
                     {
-                        maxSamples = js[key].maxSamples,
-                        sampleUploadProgress = js[key].sampleUploadProgress,
-                        modelName = js[key].modelName
-                    });
-                }
+                        models.Add(new UploadStruct()
+                        {
+                            maxSamples = js[key].maxSamples,
+                            sampleUploadProgress = js[key].sampleUploadProgress,
+                            modelName = js[key].modelName
+                        });
+                    }
 
-                SetState(new UploadModel() { models = models });
+                    SetState(new UploadModel() { models = models });
+                }
             }
         });
     }

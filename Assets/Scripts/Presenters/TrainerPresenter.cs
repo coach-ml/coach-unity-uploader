@@ -20,6 +20,8 @@ namespace Presenters
 
         private Outline Outline;
         public GameObject Tutorial;
+        public GameObject TopPanel;
+        public GameObject TapDismiss;
 
         private bool shutterDown { get; set; }
 
@@ -39,6 +41,7 @@ namespace Presenters
                 Dismiss.gameObject.SetActive(s != "");
             });
             ScanHeading.enabled = false;
+            Outline = GetComponentInChildren<Outline>();
         }
 
         public void ShutterUp()
@@ -89,9 +92,15 @@ namespace Presenters
                 Outline.effectColor = new Color(255, 0, 0, 255);
             else
             {
+                TopPanel.SetActive(true);
                 Tutorial.SetActive(false);
                 Controller.SetSubject(NameField.text);
             }
+        }
+
+        public void ShowDismiss()
+        {
+            TapDismiss.SetActive(true);
         }
     }
 }
