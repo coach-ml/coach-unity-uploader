@@ -8,19 +8,19 @@ namespace Controllers
     public class SplashController : Controller<SplashModel>
     {
         private ISceneService _sceneService;
-        private IStaticDataService _staticDataService;
         private IFirebaseService _firebaseService;
 
-        public SplashController(ISceneService sceneService, IFirebaseService firebaseService, IStaticDataService staticDataService)
+        public SplashController(ISceneService sceneService, IFirebaseService firebaseService)
         {
             _sceneService = sceneService;
             _firebaseService = firebaseService;
-            _staticDataService = staticDataService;
         }
 
         public override void Start()
         {
             _firebaseService.Initialize(AuthStateChanged);
+            Debug.Log("GPU NAME: " + SystemInfo.graphicsDeviceName);
+            Debug.Log("GPU TYPE: " + SystemInfo.graphicsDeviceType);
         }
 
         public void SignIn(string email, string password)
