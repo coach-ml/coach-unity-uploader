@@ -164,7 +164,8 @@ namespace ReactUnity.Services
             try
             {
                 var snapshot = await BaseRef.Child(User.UserId).Child("builtModels").GetValueAsync();
-                result = JsonConvert.DeserializeObject<Dictionary<string, BuiltModel>>(snapshot.GetRawJsonValue());
+                if (snapshot != null)
+                    result = JsonConvert.DeserializeObject<Dictionary<string, BuiltModel>>(snapshot.GetRawJsonValue());
             }
             catch (Exception ex)
             {

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using System.Collections;
 
 public class DeviceCameraController : MonoBehaviour
 {
@@ -23,13 +24,15 @@ public class DeviceCameraController : MonoBehaviour
     Vector3 defaultScale = new Vector3(1f, 1f, 1f);
     Vector3 fixedScale = new Vector3(-1f, 1f, 1f);
 
-    void Start()
+    IEnumerator Start()
     {
+        yield return Application.RequestUserAuthorization(UserAuthorization.WebCam);
+
         // Check for device cameras
         if (WebCamTexture.devices.Length == 0)
         {
             Debug.Log("No devices cameras found");
-            return;
+            yield break;
         }
 
         // Get the device's cameras and create WebCamTextures with them
@@ -44,8 +47,18 @@ public class DeviceCameraController : MonoBehaviour
         }
 #else
         activeCameraDevice = WebCamTexture.devices.Last();
+
+        foreach (var cDevice in WebCamTexture.devices)
+        {
+            if (activeCameraDevice.isFrontFacing && !cDevice.isFrontFacing)
+            {
+                activeCameraDevice = cDevice;   
+            }
+        }
 #endif
+        
         var texture = new WebCamTexture(activeCameraDevice.name);
+        
         // Set camera filter modes for a smoother looking image
         texture.filterMode = FilterMode.Trilinear;
 
