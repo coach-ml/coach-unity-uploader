@@ -34,7 +34,7 @@ namespace Controllers
             _s3Service.WatchRoot();
 
             await _coachService.Initialize(UserDetails.coachApi);
-            GetModels();
+            await GetModels();
         }
 
         public void OnFocus()
@@ -47,24 +47,31 @@ namespace Controllers
             return _coachService.GetModel(modelName);
         }
 
-        public async void GetModels()
+        public async Task GetModels()
         {
             var models = await _coachService.GetModels();
-            var listModel = new List<ItemModel>();
-
-            var firebaseModels = (await _firebaseService.GetBuiltModels());
-
-            foreach (var model in models)
+            if (models != null && models.Count > 0)
             {
-                if (firebaseModels.ContainsKey(model)) {
-                    listModel.Add(new ItemModel()
+                var listModel = new List<ItemModel>();
+
+                var firebaseModels = await _firebaseService.GetBuiltModels();
+                if (firebaseModels != null && firebaseModels.Count > 0)
+                {
+
+                    foreach (var model in models)
                     {
-                        Name = model
-                    });
+                        if (firebaseModels.ContainsKey(model))
+                        {
+                            listModel.Add(new ItemModel()
+                            {
+                                Name = model
+                            });
+                        }
+                    }
+
+                    SetState(new ListModel { Models = listModel });
                 }
             }
-
-            SetState(new ListModel() { Models = listModel });
         }
 
         public void Logout()
