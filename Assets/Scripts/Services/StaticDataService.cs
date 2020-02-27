@@ -29,6 +29,7 @@ namespace ReactUnity.Services
                     filename = Path.GetRandomFileName().Split('.')[0] + "." + extension;
                 }
             }
+            filename = filename.Trim();
 
             var startingPath = Path.Combine(Application.persistentDataPath, "upload_data");
             if (!Directory.Exists(startingPath))
