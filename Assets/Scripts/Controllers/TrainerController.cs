@@ -32,7 +32,7 @@ namespace Controllers
 
         public void TakePhoto(byte[] photo)
         {
-            var subject = State.Subject;
+            var subject = State.Subject.Trim();
 
             // Save the photo
             _staticDataService.WriteToDisk(photo, extension: "jpg", subdirectory: subject);
@@ -54,11 +54,11 @@ namespace Controllers
         {
             SetState(new TrainerModel()
             {
-                Subject = subject,
+                Subject = subject.Trim(),
                 SampleCount = State.SampleCount
             });
 
-            _fireaseService.NewModel(State.Subject);
+            _fireaseService.NewModel(State.Subject.Trim());
         }
     }
 }
