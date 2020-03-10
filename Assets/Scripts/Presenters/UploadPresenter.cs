@@ -64,7 +64,7 @@ class UploadController : Controller<UploadModel>
                     {
                         models.Add(new UploadStruct()
                         {
-                            maxSamples = js[key].maxSamples,
+                            maxSamples = (int)js[key].maxSamples,
                             sampleUploadProgress = js[key].sampleUploadProgress,
                             modelName = js[key].modelName
                         });
