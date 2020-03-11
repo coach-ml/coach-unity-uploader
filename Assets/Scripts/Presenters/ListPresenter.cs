@@ -33,6 +33,13 @@ namespace Presenters
         public override void OnRefocus()
         {
             Controller.OnFocus();
+
+            var buttons = GameObject.FindWithTag("model_list").GetComponentsInChildren<Button>();
+            foreach (var button in buttons)
+            {
+                button.enabled = true;
+                button.GetComponent<Image>().color = new Color32(34, 96, 66, 255);
+            }
         }
 
         public void ShowUploadPanel()
@@ -62,8 +69,11 @@ namespace Presenters
                 var model = itemList[i];
 
                 GameObject newButton = Instantiate(buttonPrefab);
-                newButton.GetComponentInChildren<Button>().onClick.AddListener(() =>
+                var me = newButton.GetComponentInChildren<Button>();
+                me.onClick.AddListener(() =>
                 {
+                    me.enabled = false;
+                    me.GetComponent<Image>().color = Color.grey;
                     DownloadAndPlay(model);
                 });
                 newButton.GetComponentInChildren<Text>().text = model.Name;
@@ -73,6 +83,13 @@ namespace Presenters
         
         public async void DownloadAndPlay(ItemModel itemModel)
         {
+            var buttons = GameObject.FindWithTag("model_list").GetComponentsInChildren<Button>();
+            foreach (var button in buttons)
+            {
+                button.enabled = false;
+                button.GetComponent<Image>().color = Color.grey;
+            }
+
             var model = await Controller.DownloadModel(itemModel.Name);
             Controller._sceneService.LoadScene<Scenes.TestScene>(new TestModel()
             {
