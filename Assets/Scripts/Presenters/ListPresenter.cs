@@ -19,6 +19,7 @@ namespace Presenters
         public GameObject uploadPanel;
         public Text noModelsWarning;
         public Text PanelTitle;
+        public Text errorMessage;
 
         protected override void Render(ListModel state)
         {
@@ -90,11 +91,17 @@ namespace Presenters
                 button.GetComponent<Image>().color = Color.grey;
             }
 
-            var model = await Controller.DownloadModel(itemModel.Name);
-            Controller._sceneService.LoadScene<Scenes.TestScene>(new TestModel()
+            try
             {
-                model = model
-            }, LoadSceneMode.Additive);
+                var model = await Controller.DownloadModel(itemModel.Name);
+                Controller._sceneService.LoadScene<Scenes.TestScene>(new TestModel()
+                {
+                    model = model
+                }, LoadSceneMode.Additive);
+            } catch (Exception e)
+            {
+                errorMessage.text = e.Message;
+            }
         }
 
         public void ShowTrainer()
