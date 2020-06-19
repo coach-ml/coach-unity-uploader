@@ -95,17 +95,10 @@
      <None Include="Assets\Parse\Plugins\Unity.Compat.dll" />
      <None Include="Assets\Firebase\Plugins\x86_64\FirebaseCppDatabase.dll" />
      <None Include="Assets\Firebase\Plugins\x86_64\FirebaseCppStorage.dll" />
-     <None Include="Assets\Firebase\Plugins\Firebase.App.dll" />
      <None Include="Assets\Parse\Plugins\Unity.Tasks.dll" />
      <None Include="Assets\Firebase\Plugins\x86_64\FirebaseCppAuth.dll" />
-     <None Include="Assets\Firebase\Plugins\Firebase.TaskExtension.dll" />
      <None Include="Assets\link.xml" />
-     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-app-unity\maven-metadata.xml" />
-     <None Include="Assets\Firebase\Plugins\Firebase.Auth.dll" />
      <None Include="Assets\awsconfig.xml" />
-     <None Include="Assets\Firebase\Plugins\Firebase.Database.dll" />
-     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-auth-unity\maven-metadata.xml" />
-     <None Include="Assets\Firebase\Plugins\iOS\Firebase.Auth.dll" />
      <None Include="Assets\AWSSDK\AWSSDK.Core.dll" />
      <None Include="Assets\Coach-ML\Barracuda\Plugins\ProtoBuffer\Google.Protobuf.dll" />
      <None Include="Assets\Coach-ML\LICENSE.txt" />
@@ -113,18 +106,10 @@
      <None Include="Assets\Firebase\Plugins\x86_64\FirebaseCppApp-6_10_0.dll" />
      <None Include="Assets\CrystalFramework\Utility\Demos\SafeAreaDemo.txt" />
      <None Include="Assets\AWSSDK\AWSSDK.S3.dll" />
-     <None Include="Assets\Firebase\Plugins\iOS\Firebase.Database.dll" />
      <None Include="Assets\Parse\Plugins\dotNet45\Unity.Compat.dll" />
-     <None Include="Assets\Firebase\Plugins\Firebase.Platform.dll" />
      <None Include="Assets\Parse\Plugins\dotNet45\Unity.Tasks.dll" />
-     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-database-unity\maven-metadata.xml" />
-     <None Include="Assets\Firebase\Plugins\Firebase.Storage.dll" />
-     <None Include="Assets\Firebase\Plugins\Google.MiniJson.dll" />
-     <None Include="Assets\Firebase\Plugins\iOS\Firebase.Storage.dll" />
      <None Include="Assets\Newtonsoft.Json.dll" />
      <None Include="Assets\AWSSDK\AWSSDK.SecurityToken.dll" />
-     <None Include="Assets\Firebase\Plugins\iOS\Firebase.App.dll" />
-     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-storage-unity\maven-metadata.xml" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
     </Reference>
@@ -349,27 +334,6 @@
     </Reference>
     <Reference Include="Google.Protobuf">
       <HintPath>Assets\Coach-ML\Barracuda\Plugins\ProtoBuffer\Google.Protobuf.dll</HintPath>
-    </Reference>
-    <Reference Include="Firebase.App">
-      <HintPath>Assets\Firebase\Plugins\Firebase.App.dll</HintPath>
-    </Reference>
-    <Reference Include="Firebase.Auth">
-      <HintPath>Assets\Firebase\Plugins\Firebase.Auth.dll</HintPath>
-    </Reference>
-    <Reference Include="Firebase.Database">
-      <HintPath>Assets\Firebase\Plugins\Firebase.Database.dll</HintPath>
-    </Reference>
-    <Reference Include="Firebase.Platform">
-      <HintPath>Assets\Firebase\Plugins\Firebase.Platform.dll</HintPath>
-    </Reference>
-    <Reference Include="Firebase.Storage">
-      <HintPath>Assets\Firebase\Plugins\Firebase.Storage.dll</HintPath>
-    </Reference>
-    <Reference Include="Firebase.TaskExtension">
-      <HintPath>Assets\Firebase\Plugins\Firebase.TaskExtension.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.MiniJson">
-      <HintPath>Assets\Firebase\Plugins\Google.MiniJson.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Compat">
       <HintPath>Assets\Parse\Plugins\dotNet45\Unity.Compat.dll</HintPath>
