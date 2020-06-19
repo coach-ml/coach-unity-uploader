@@ -20,7 +20,7 @@ namespace ReactUnity.Services
 
         public async Task Initialize(string apiKey)
         {
-            Client = await new CoachClient().Login(apiKey);
+            Client = await new CoachClient(isDebug: true).Login(apiKey);
         }
 
         public async Task<CoachModel> GetModel(string modelName)

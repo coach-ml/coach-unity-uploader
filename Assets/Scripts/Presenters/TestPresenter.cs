@@ -25,8 +25,10 @@ public class TestPresenter : Presenter<TestController, TestModel>
 
     private void Update()
     {
+        Controller.GetResultsAsync();
+
         var photo = CameraController.GetWebcamPhoto();
-        Controller.Predict(photo);
+        StartCoroutine(Controller.PredictAsync(photo));
     }
 
     public void GoBack()
