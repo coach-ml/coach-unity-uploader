@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ListController
   - Presenter
+  - model_list
   layers:
   - Default
   - TransparentFX

@@ -685,7 +685,7 @@ namespace Coach
     public class CoachClient
     {
         public bool IsDebug { get; private set; }
-        public Profile Profile { get; set; }
+        private Profile Profile { get; set; }
         private string ApiKey { get; set; }
 
         ///<summary>

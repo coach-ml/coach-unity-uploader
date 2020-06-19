@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Barracuda
 {
     public class NNModel : ScriptableObject
     {
         [HideInInspector]
-        public byte[] Value;
+        public NNModelData modelData;
     }
 }
