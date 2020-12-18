@@ -124,6 +124,18 @@ their customers.  For more information about integrating EDM4U
 into your own plugin, see the [Plugin Redistribution](#plugin-redistribution)
 section of this document.
 
+# Analytics
+
+The External Dependency Manager for Unity plugin by default logs usage to Google
+Analytics. The purpose of the logging is to quantitatively measure the usage of
+functionality, to gather reports on integration failures and to inform future
+improvements to the developer experience of the External Dependency Manager
+plugin. Note that the analytics collected are limited to the scope of the EDM4U
+plugin’s usage.
+
+For details of what is logged, please refer to the usage of
+`EditorMeasurement.Report()` in the source code.
+
 # Requirements
 
 The *Android Resolver* and *iOS Resolver* components of the plugin only work
@@ -160,7 +172,8 @@ package:
       you add the `-gvh_disable` option.
    1. Export your plugin by [running Unity from the command line](https://docs.unity3d.com/Manual/CommandLineArguments.html), ensuring that
       you:
-      - Include the contents of the `Assets/PlayServicesResolver` directory.
+      - Include the contents of the `Assets/PlayServicesResolver` and
+        `Assets/ExternalDependencyManager` directory.
       - Add the `-gvh_disable` option.
 
 You **must** specify the `-gvh_disable` option in order for the Version

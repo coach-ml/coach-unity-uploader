@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
-using Firebase.Unity.Editor;
+// using Firebase.Unity.Editor;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -37,7 +37,7 @@ namespace ReactUnity.Services
         {
             AuthStateChanged = authStateChanged;
 
-            FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://coachuploader-ac4d7.firebaseio.com/");
+            // FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://coachuploader-ac4d7.firebaseio.com/");
             BaseRef = FirebaseDatabase.DefaultInstance.RootReference;
 
             Auth = FirebaseAuth.DefaultInstance;
