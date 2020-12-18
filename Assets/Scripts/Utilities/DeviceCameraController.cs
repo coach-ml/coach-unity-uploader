@@ -120,7 +120,7 @@ public class DeviceCameraController : MonoBehaviour
     void Update()
     {
         // Skip making adjustment for incorrect camera data
-        if (activeCameraTexture.width < 100)
+        if (activeCameraTexture || activeCameraTexture.width < 100)
         {
             return;
         }

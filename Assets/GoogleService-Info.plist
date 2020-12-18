@@ -6,6 +6,8 @@
 	<string>783099083221-kaj2rgtvfgjnc7ebmtsqlcr1qnls6vhv.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
 	<string>com.googleusercontent.apps.783099083221-kaj2rgtvfgjnc7ebmtsqlcr1qnls6vhv</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>783099083221-pslfl7fdp7o1d56jig9louqafs3p555c.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAI7aZF8j1FQhxPdkqIjpA86Y-YLqwVNZk</string>
 	<key>GCM_SENDER_ID</key>
@@ -29,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:783099083221:ios:4c8646977e6bcd35a9e55c</string>
+	<string>1:783099083221:ios:273cd3590e542099a9e55c</string>
 	<key>DATABASE_URL</key>
 	<string>https://coachuploader-ac4d7.firebaseio.com</string>
 </dict>

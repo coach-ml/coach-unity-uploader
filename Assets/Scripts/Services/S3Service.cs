@@ -31,13 +31,16 @@ namespace ReactUnity.Services
 
         public void Initialize(CoachUser user)
         {
-            Bucket = user.bucket;
-            ClientName = user.clientName;
-            Client = new AmazonS3Client(user.s3Key, user.s3Secret, RegionEndpoint.USWest2);
+            if (user != null) {
+                Bucket = user.bucket;
+                ClientName = user.clientName;
+                Client = new AmazonS3Client(user.s3Key, user.s3Secret, RegionEndpoint.USWest2);
+            }
         }
 
         public async void WatchRoot()
         {
+            Debug.Log("Watching root...");
             var path = Path.Combine(Application.persistentDataPath, "upload_data");
             if (!Directory.Exists(path))
             {
