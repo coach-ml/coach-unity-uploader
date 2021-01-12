@@ -15,9 +15,7 @@ namespace Controllers
         public IS3Service _s3Service;
         public IFirebaseService _firebaseService;
         public ICoachService _coachService;
-
-        private CoachUser UserDetails { get;  set; }
-
+        
         ListController(IStaticDataService staticDataService, ISceneService sceneService, IS3Service s3Service, IFirebaseService firebaseService, ICoachService coachService)
         {
             _staticDataService = staticDataService;
@@ -29,12 +27,15 @@ namespace Controllers
 
         public override async void Start()
         {
-            UserDetails = await _firebaseService.GetUserDetails();
-            _s3Service.Initialize(UserDetails);
-            _s3Service.WatchRoot();
+            var userDetails = await _firebaseService.GetUserDetails();
+            if (userDetails != null)
+            {
+                _s3Service.Initialize(userDetails);
+                _s3Service.WatchRoot();
 
-            await _coachService.Initialize(UserDetails.coachApi);
-            await GetModels();
+                await _coachService.Initialize(userDetails.coachApi);
+                await GetModels();
+            }
         }
 
         public void OnFocus()

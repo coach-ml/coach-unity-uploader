@@ -56,9 +56,9 @@ public class DeviceCameraController : MonoBehaviour
             }
         }
 #endif
-        
+
         var texture = new WebCamTexture(activeCameraDevice.name);
-        
+
         // Set camera filter modes for a smoother looking image
         texture.filterMode = FilterMode.Trilinear;
 
@@ -82,7 +82,7 @@ public class DeviceCameraController : MonoBehaviour
 
     public void Play()
     {
-        if(activeCameraTexture != null)
+        if (activeCameraTexture != null)
         {
             activeCameraTexture.Play();
         }
@@ -103,7 +103,7 @@ public class DeviceCameraController : MonoBehaviour
         {
             activeCameraTexture.Stop();
         }
-        
+
         activeCameraTexture = cameraToUse;
         activeCameraDevice = WebCamTexture.devices.FirstOrDefault(device =>
             device.name == cameraToUse.deviceName);
@@ -117,19 +117,18 @@ public class DeviceCameraController : MonoBehaviour
     // Make adjustments to image every frame to be safe, since Unity isn't 
     // guaranteed to report correct data as soon as device camera is started
 
-    void Update()
+    private void FixedUpdate()
     {
         // Skip making adjustment for incorrect camera data
-        if (activeCameraTexture || activeCameraTexture.width < 100)
+        if (activeCameraTexture.width < 100)
         {
+            Debug.Log("Still waiting another frame for correct info...");
             return;
         }
 
         // Rotate image to show correct orientation 
         rotationVector.z = -activeCameraTexture.videoRotationAngle;
         image.rectTransform.localEulerAngles = rotationVector;
-
-        //image.rectTransform.sizeDelta = new Vector2(image.rectTransform.sizeDelta.x, Screen.height);
 
         // Set AspectRatioFitter's ratio
         float videoRatio =
@@ -143,6 +142,18 @@ public class DeviceCameraController : MonoBehaviour
         // Mirror front-facing camera's image horizontally to look more natural
         imageParent.localScale =
             activeCameraDevice.isFrontFacing ? fixedScale : defaultScale;
+    }
+
+    void _Update()
+    {
+        rotationVector.z = -activeCameraTexture.videoRotationAngle;
+        image.rectTransform.localEulerAngles = rotationVector;
+        image.rectTransform.sizeDelta = new Vector2(Screen.height, Screen.width);
+        image.material.SetTextureScale("_Texture", new Vector2(1f, 1f));
+
+        // Unflip if vertically flipped
+        image.uvRect =
+            activeCameraTexture.videoVerticallyMirrored ? fixedRect : defaultRect;
     }
 
     public void Dispose()

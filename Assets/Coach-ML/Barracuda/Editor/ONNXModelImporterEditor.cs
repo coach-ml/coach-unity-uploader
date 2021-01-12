@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using UnityEditor;
-using UnityEditor.Experimental.AssetImporters;
+
 using UnityEngine;
 using System;
 
@@ -13,7 +13,7 @@ namespace Unity.Barracuda
 /// Asset Importer Editor of ONNX models
 /// </summary>
 [CustomEditor(typeof(ONNXModelImporter))]
-public class ONNXModelImporterEditor : ScriptedImporterEditor
+public class ONNXModelImporterEditor : UnityEditor.AssetImporters.ScriptedImporterEditor
 {
     public override void OnInspectorGUI()
     {
