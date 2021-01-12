@@ -8,6 +8,7 @@ public class DeviceCameraController : MonoBehaviour
     public RawImage image;
     public RectTransform imageParent;
     public AspectRatioFitter imageFitter;
+    public Slider cameraSelector;
 
     // Device cameras
     WebCamDevice activeCameraDevice;
@@ -36,6 +37,17 @@ public class DeviceCameraController : MonoBehaviour
         }
 
         // Get the device's cameras and create WebCamTextures with them
+        for (var i = 0; i < WebCamTexture.devices.Length; i++)
+        {
+            var d = WebCamTexture.devices[i];
+            Debug.Log("CAMERA: " + i + " || " + d.name);
+        }
+
+        cameraSelector.maxValue = WebCamTexture.devices.Length - 1;
+
+        //activeCameraDevice = WebCamTexture.devices[];
+        //activeCameraDevice = WebCamTexture.devices.Where(d => !d.isFrontFacing).First();
+        
 #if UNITY_EDITOR
         if (WebCamTexture.devices.Any(d => d.name.Contains("Remote")))
         {
@@ -46,15 +58,7 @@ public class DeviceCameraController : MonoBehaviour
             activeCameraDevice = WebCamTexture.devices.Last();
         }
 #else
-        activeCameraDevice = WebCamTexture.devices.Last();
-
-        foreach (var cDevice in WebCamTexture.devices)
-        {
-            if (activeCameraDevice.isFrontFacing && !cDevice.isFrontFacing)
-            {
-                activeCameraDevice = cDevice;   
-            }
-        }
+       activeCameraDevice = WebCamTexture.devices.Where(d => !d.isFrontFacing).First();
 #endif
 
         var texture = new WebCamTexture(activeCameraDevice.name);
@@ -64,6 +68,12 @@ public class DeviceCameraController : MonoBehaviour
 
         // Set the camera to use by default
         SetActiveCamera(texture);
+    }
+
+    public void OnCameraSliderChange()
+    {
+        Debug.Log((int)cameraSelector.value);
+        ChangeCamera(WebCamTexture.devices[(int)cameraSelector.value]);
     }
 
     public Texture2D GetWebcamPhoto()
@@ -96,6 +106,12 @@ public class DeviceCameraController : MonoBehaviour
         }
     }
 
+    public void ChangeCamera(WebCamDevice device)
+    {
+        var texture = new WebCamTexture(device.name);
+        SetActiveCamera(texture);
+    }
+
     // Set the device camera to use and start it
     public void SetActiveCamera(WebCamTexture cameraToUse)
     {
@@ -109,7 +125,6 @@ public class DeviceCameraController : MonoBehaviour
             device.name == cameraToUse.deviceName);
 
         image.texture = activeCameraTexture;
-        //image.material.mainTexture = activeCameraTexture;
 
         activeCameraTexture.Play();
     }
@@ -142,18 +157,6 @@ public class DeviceCameraController : MonoBehaviour
         // Mirror front-facing camera's image horizontally to look more natural
         imageParent.localScale =
             activeCameraDevice.isFrontFacing ? fixedScale : defaultScale;
-    }
-
-    void _Update()
-    {
-        rotationVector.z = -activeCameraTexture.videoRotationAngle;
-        image.rectTransform.localEulerAngles = rotationVector;
-        image.rectTransform.sizeDelta = new Vector2(Screen.height, Screen.width);
-        image.material.SetTextureScale("_Texture", new Vector2(1f, 1f));
-
-        // Unflip if vertically flipped
-        image.uvRect =
-            activeCameraTexture.videoVerticallyMirrored ? fixedRect : defaultRect;
     }
 
     public void Dispose()
