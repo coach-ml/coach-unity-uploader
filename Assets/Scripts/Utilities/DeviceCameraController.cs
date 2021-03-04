@@ -125,6 +125,7 @@ public class DeviceCameraController : MonoBehaviour
             device.name == cameraToUse.deviceName);
 
         image.texture = activeCameraTexture;
+        image.material.SetTextureScale("_Texture", new Vector2(1f, 1f));
 
         activeCameraTexture.Play();
     }
