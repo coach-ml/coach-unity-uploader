@@ -744,7 +744,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10642b5704dace4469c4de3b6a4fd9d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CameraController: {fileID: 0}
+  CameraController: {fileID: 737861666}
   NameField: {fileID: 1743611029}
   ScanHeading: {fileID: 1788270348}
   Dismiss: {fileID: 263342802}
