@@ -43,11 +43,13 @@ public class DeviceCameraController : MonoBehaviour
             Debug.Log("CAMERA: " + i + " || " + d.name);
         }
 
-        cameraSelector.maxValue = WebCamTexture.devices.Length - 1;
+        if (cameraSelector != null)
+            cameraSelector.maxValue = WebCamTexture.devices.Length - 1;
 
         //activeCameraDevice = WebCamTexture.devices[];
         //activeCameraDevice = WebCamTexture.devices.Where(d => !d.isFrontFacing).First();
-        
+ 
+
 #if UNITY_EDITOR
         if (WebCamTexture.devices.Any(d => d.name.Contains("Remote")))
         {
@@ -61,7 +63,11 @@ public class DeviceCameraController : MonoBehaviour
        activeCameraDevice = WebCamTexture.devices.Where(d => !d.isFrontFacing).First();
 #endif
 
+        
+
         var texture = new WebCamTexture(activeCameraDevice.name);
+        texture.requestedWidth = 1080;
+        texture.requestedHeight = 1920;
 
         // Set camera filter modes for a smoother looking image
         texture.filterMode = FilterMode.Trilinear;
@@ -78,6 +84,8 @@ public class DeviceCameraController : MonoBehaviour
 
     public Texture2D GetWebcamPhoto()
     {
+       
+
         if (activeCameraTexture != null)
         {
             Texture2D photo = new Texture2D(activeCameraTexture.width, activeCameraTexture.height);
@@ -125,7 +133,8 @@ public class DeviceCameraController : MonoBehaviour
             device.name == cameraToUse.deviceName);
 
         image.texture = activeCameraTexture;
-        image.material.SetTextureScale("_Texture", new Vector2(1f, 1f));
+        //image.material.SetTextureScale("_Texture", new Vector2(1f, 1f));
+        UpdateSize();
 
         activeCameraTexture.Play();
     }
@@ -135,21 +144,94 @@ public class DeviceCameraController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Skip making adjustment for incorrect camera data
-        if (activeCameraTexture.width < 100)
+        //// Skip making adjustment for incorrect camera data
+        //if (activeCameraTexture.width < 100)
+        //{
+        //    Debug.Log("Still waiting another frame for correct info...");
+        //    return;
+        //}
+
+        //// Rotate image to show correct orientation 
+        //rotationVector.z = -activeCameraTexture.videoRotationAngle;
+        //image.rectTransform.localEulerAngles = rotationVector;
+
+        //// Set AspectRatioFitter's ratio
+        //float videoRatio =
+        //    (float)activeCameraTexture.width / (float)activeCameraTexture.height;
+        //imageFitter.aspectRatio = videoRatio;
+
+        //// Unflip if vertically flipped
+        //image.uvRect =
+        //    activeCameraTexture.videoVerticallyMirrored ? fixedRect : defaultRect;
+
+        //// Mirror front-facing camera's image horizontally to look more natural
+        //imageParent.localScale =
+            //activeCameraDevice.isFrontFacing ? fixedScale : defaultScale;
+
+        UpdateSize();
+    }
+
+    // Make adjustments to image every frame to be safe, since Unity isn't 
+    // guaranteed to report correct data as soon as device camera is started
+    private void UpdateSize()
+    {
+        // Rotate image to show correct orientation 
+        if (activeCameraTexture == null)
         {
-            Debug.Log("Still waiting another frame for correct info...");
+            Debug.Log("No active camera texture");
             return;
+            //SetupCameraTexture();
         }
 
-        // Rotate image to show correct orientation 
         rotationVector.z = -activeCameraTexture.videoRotationAngle;
         image.rectTransform.localEulerAngles = rotationVector;
 
-        // Set AspectRatioFitter's ratio
-        float videoRatio =
-            (float)activeCameraTexture.width / (float)activeCameraTexture.height;
-        imageFitter.aspectRatio = videoRatio;
+        if (activeCameraTexture.width >= 100)
+        {
+            float videoRatio =
+                (float)activeCameraTexture.width / (float)activeCameraTexture.height;
+            var parentHeight = imageParent.rect.height;
+            var parentWidth = imageParent.rect.width;
+            var parentRatio = parentWidth / parentHeight;
+
+            if (activeCameraTexture.videoRotationAngle == 90 || activeCameraTexture.videoRotationAngle == 270)
+            {
+                videoRatio = 1f / videoRatio;
+            }
+
+            float targetWidth, targetHeight;
+
+            if (parentRatio > videoRatio)
+            {
+                targetWidth = parentWidth;
+                targetHeight = parentWidth / videoRatio;
+            }
+            else
+            {
+                targetWidth = parentHeight * videoRatio;
+                targetHeight = parentHeight;
+            }
+
+            if (activeCameraTexture.videoRotationAngle == 90 || activeCameraTexture.videoRotationAngle == 270)
+            {
+                image.rectTransform.sizeDelta = new Vector2(targetHeight, targetWidth);
+            }
+            else
+            {
+                image.rectTransform.sizeDelta = new Vector2(targetWidth, targetHeight);
+            }
+        }
+        else
+        {
+            if (activeCameraTexture.videoRotationAngle == 90 || activeCameraTexture.videoRotationAngle == 270)
+            {
+                image.rectTransform.sizeDelta = new Vector2(Screen.height, Screen.width);
+            }
+            else
+            {
+                image.rectTransform.sizeDelta = new Vector2(Screen.height, Screen.width);
+            }
+        }
 
         // Unflip if vertically flipped
         image.uvRect =
@@ -159,6 +241,7 @@ public class DeviceCameraController : MonoBehaviour
         imageParent.localScale =
             activeCameraDevice.isFrontFacing ? fixedScale : defaultScale;
     }
+
 
     public void Dispose()
     {

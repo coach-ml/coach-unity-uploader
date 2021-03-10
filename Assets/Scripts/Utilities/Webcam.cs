@@ -40,7 +40,9 @@ namespace Utilities
                 WebCamDevice[] devices = WebCamTexture.devices;
                 if (devices.Length > 0)
                 {
-                    _webCamTexture = new WebCamTexture(devices[0].name, 720, 1280);
+                    _webCamTexture = new WebCamTexture(devices[0].name, 1080, 1920);
+                    //_webCamTexture.anisoLevel = 9;
+                    _webCamTexture.filterMode = FilterMode.Trilinear;
                     _webCamTexture.Play();
 
                     yield return new WaitUntil(() => _webCamTexture.width > 10);

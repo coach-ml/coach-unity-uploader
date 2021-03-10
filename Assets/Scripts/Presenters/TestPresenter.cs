@@ -26,7 +26,8 @@ public class TestPresenter : Presenter<TestController, TestModel>
     private void Update()
     {
         var photo = CameraController.GetWebcamPhoto();
-        Controller.Predict(photo);
+        if (photo != null)
+            Controller.Predict(photo);
     }
 
     public void GoBack()

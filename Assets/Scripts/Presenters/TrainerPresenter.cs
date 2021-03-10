@@ -42,7 +42,13 @@ namespace Presenters
             });
             ScanHeading.enabled = false;
             Outline = GetComponentInChildren<Outline>();
+      
         }
+
+        //private void Start()
+        //{
+        //    ARManager.UseCamera();
+        //}
 
         public void ShutterUp()
         {
