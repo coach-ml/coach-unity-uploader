@@ -264,7 +264,7 @@ namespace Coach
         {
             this.Model = model;
 
-            this.Worker = WorkerFactory.CreateWorker(WorkerFactory.Type.CSharpBurst, model.Model);
+            this.Worker = WorkerFactory.CreateWorker(WorkerFactory.Type.CSharp, model.Model);
             this.Worker.PrepareForInput(new Dictionary<string, TensorShape>()
             {
                 { model.InputName, new TensorShape(1, model.ImageDims.InputSize, model.ImageDims.InputSize, 3) }
