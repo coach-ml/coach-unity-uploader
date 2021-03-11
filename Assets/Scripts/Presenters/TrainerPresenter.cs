@@ -45,11 +45,6 @@ namespace Presenters
       
         }
 
-        //private void Start()
-        //{
-        //    ARManager.UseCamera();
-        //}
-
         public void ShutterUp()
         {
             shutterDown = false;
@@ -68,13 +63,16 @@ namespace Presenters
 
         public void TakePhoto()
         {
-            if (NameField.text != "")
+            if (NameField.text != "" && CameraController.IsRunning())
             {
                 var photo = CameraController.GetWebcamPhoto();
-                byte[] bytes = photo.EncodeToJPG();
-                UnityEngine.Object.Destroy(photo);
+                if (photo != null) {
+                    byte[] bytes = photo.EncodeToJPG();
+                    UnityEngine.Object.Destroy(photo);
 
-                Controller.TakePhoto(bytes);
+                    Controller.TakePhoto(bytes);
+                }
+
             }
         }
 

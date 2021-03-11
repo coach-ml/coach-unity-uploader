@@ -76,6 +76,10 @@ public class DeviceCameraController : MonoBehaviour
         SetActiveCamera(texture);
     }
 
+    public bool IsRunning() {
+        return activeCameraTexture != null && activeCameraTexture.isPlaying;
+    }
+
     public void OnCameraSliderChange()
     {
         Debug.Log((int)cameraSelector.value);
@@ -84,8 +88,6 @@ public class DeviceCameraController : MonoBehaviour
 
     public Texture2D GetWebcamPhoto()
     {
-       
-
         if (activeCameraTexture != null)
         {
             Texture2D photo = new Texture2D(activeCameraTexture.width, activeCameraTexture.height);

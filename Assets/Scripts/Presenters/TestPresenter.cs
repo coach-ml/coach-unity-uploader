@@ -25,9 +25,13 @@ public class TestPresenter : Presenter<TestController, TestModel>
 
     private void Update()
     {
-        var photo = CameraController.GetWebcamPhoto();
-        if (photo != null)
-            Controller.Predict(photo);
+        if (CameraController.IsRunning()) {
+            var photo = CameraController.GetWebcamPhoto();
+            if (photo != null)
+            {
+                Controller.Predict(photo);
+            }
+        }
     }
 
     public void GoBack()
@@ -64,11 +68,13 @@ public class TestController : Controller<TestModel>
     public void Predict(Texture2D photo)
     {
         var r = State.model.Predict(photo, true);
-        SetState(new TestModel()
-        {
-            model = State.model,
-            result = r.Best()
-        });
+        if (r != null) {
+            SetState(new TestModel()
+            {
+                model = State.model,
+                result = r.Best()
+            });
+        }
     }
 
     public void GetResultsAsync()
